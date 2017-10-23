@@ -5,34 +5,21 @@ var basicOp = function(opr, val1, val2) {
     switch (opr) {
 
         case '+':
-            {
-                result = val1 + val2;
-                break;
-            }
-
+            result = val1 + val2;
+            break;
         case '-':
-            {
-                result = val1 >= val2 ? val1 - val2 : val2 - val1;
-                break;
-            }
-
+            result = val1 - val2;
+            break;
         case '*':
-            {
-                result = val1 * val2;
-                break;
-            }
-
+            result = val1 * val2;
+            break;
         case '/':
-            {
-                result = val1 / val2;
-                break;
-            }
-
+            result = val1 / val2;
+            break;
         default:
-            {
-                result = "Enter only basic Operation, check operation is valid";
-            }
-
+            result = "Enter only basic Operation, check operation is valid";
+            break;
     }
+    
     return result;
 }

@@ -1,42 +1,41 @@
-//http://www.codewars.com/kata/calculating-with-functions
 function zero(param) {
-    return someDummy(zero.name, param);
+    return findDigitOrSymbol(zero.name, param);
 }
 
 function one(param) {
-    return someDummy(one.name, param);
+    return findDigitOrSymbol(one.name, param);
 }
 
 function two(param) {
-    return someDummy(two.name, param);
+    return findDigitOrSymbol(two.name, param);
 }
 
 function three(param) {
-    return someDummy(three.name, param);
+    return findDigitOrSymbol(three.name, param);
 }
 
 function four(param) {
-    return someDummy(four.name, param);
+    return findDigitOrSymbol(four.name, param);
 }
 
 function five(param) {
-    return someDummy(five.name, param);
+    return findDigitOrSymbol(five.name, param);
 }
 
 function six(param) {
-    return someDummy(six.name, param);
+    return findDigitOrSymbol(six.name, param);
 }
 
 function seven(param) {
-    return someDummy(seven.name, param);
+    return findDigitOrSymbol(seven.name, param);
 }
 
 function eight(param) {
-    return someDummy(eight.name, param);
+    return findDigitOrSymbol(eight.name, param);
 }
 
 function nine(param) {
-    return someDummy(nine.name, param);
+    return findDigitOrSymbol(nine.name, param);
 }
 
 function plus(param) {
@@ -55,7 +54,7 @@ function dividedBy(param) {
     return (dividedBy.name + " " + param);
 }
 
-function someDummy(stk, param) {
+function findDigitOrSymbol(stk, param) {
     return typeof(param) === "undefined" ? stk : arithmeticRes(stk + " " + (param || ''));
 }
 

@@ -1,21 +1,12 @@
 //http://www.codewars.com/kata/word-count
 function countWords(str) {
-    var length;
-    var breakWords;
-    var regex;
-
+    var length, breakWords, regex, breakWords;
+    
     regex = /[^\u0000-\u00ff]/; //To test Unicode characters
     if (regex.test(str)) {
         str = str.replace(/(?! )\s/g, ' '); //To replace unicode characters
     }
-
-    breakWords = str.trim().split(" ");
-    length = 0;
-
-    for (var i = 0; i < breakWords.length; i++) {
-        if (breakWords[i].length > 0) {
-            length += 1;
-        }
-    }
-    return length;
+    
+    breakWords = str.trim().match(/\S+/g) || [];
+    return breakWords.length;
 }

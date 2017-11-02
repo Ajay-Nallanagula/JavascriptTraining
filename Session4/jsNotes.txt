@@ -1,0 +1,34 @@
+Hard binding done ,
+apply
+call
+
+someFunct.apply(thisPointedToObj, [arguments as an array]);
+someFunct.apply(thisPointedToObj, arguments comma seperated);
+
+arguments is array like object, but its not an array we cannot use split splice etc like functions on arguments
+
+bind: will only set the context , but it will not invoke the function . apply and call will set context and call the function
+
+var k  = someFunct.apply(thisPointedToObj, [arguments as an array]); // will directly return the value ex 9 or 10
+var k  = someFunct.someFunct.apply(thisPointedToObj, arguments comma seperated); // will directly return the value ex 9 or 10
+var p = someFunct.bind(someObj) // returns a function you need to execute it  to get return value
+
+typeof Object  // function ==> Object is a constructor function 
+typeof Number // function  Number is constructor function   wrapper over numbers
+* Start with capital Letter
+
+
+Prototype:
+Prototype is a property that gets created as soon as you define function
+Its intial value is an object with a single constructor.
+
+
+[[Prototype]] is changed to __proto__
+prototype & __proto__ bothe are available only on functions
+__proto__ is available for objects
+
+object.create vs new Object()
+
+
+
+

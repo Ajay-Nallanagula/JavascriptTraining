@@ -3,15 +3,34 @@ function createFunctions(n) {
     var callbacks, i, elem;
     callbacks = [];
     for (i = 0; i < n; i++) {
-        elem = (function innFunc(i) {
+        callbacks.push((function innFunc(i) {
             return function innerMostFunc() {
                 return i;
             };
-        })(i);
-        callbacks.push(elem);
+        })(i));
     }
     return callbacks;
 }
+
+
+
+
+
+
+
+//Way 3:
+/*function createFunctions(n) {
+    var callbacks, i, elem;
+    callbacks = [];
+    for (i = 0; i < n; i++) {
+        callbacks.push((function innFunc(i) {
+            return function innerMostFunc() {
+                return i;
+            };
+        })(i));
+    }
+    return callbacks;
+}*/
 
 
 

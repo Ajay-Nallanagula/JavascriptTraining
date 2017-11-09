@@ -3,8 +3,8 @@ function createFunctions(n) {
     var callbacks, i, elem;
     callbacks = [];
     for (i = 0; i < n; i++) {
-        callbacks.push((function innFunc(i) {
-            return function innerMostFunc() {
+        callbacks.push((function giveExtract(i) {
+            return function extractValue() {
                 return i;
             };
         })(i));

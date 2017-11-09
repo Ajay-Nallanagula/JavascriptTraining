@@ -23,7 +23,7 @@ function createFunctions(n) {
     var callbacks, i, elem;
     callbacks = [];
     for (i = 0; i < n; i++) {
-    var elem = (function innFunc(i) {
+    elem = (function innFunc(i) {
             return function innerMostFunc() {
                 return i;
             };

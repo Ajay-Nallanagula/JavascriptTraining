@@ -11,3 +11,5 @@ function prefill(noOfElements, items) {
     }
     return newArry;
 }
+
+//Challenge faced here is, usage of === over == in the else if block for checking zero

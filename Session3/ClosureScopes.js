@@ -13,6 +13,27 @@ function createFunctions(n) {
 }
 
 
+/*
+Disadvantage of closure:
+function createFunctions(n) {
+    var callbacks, i, elem;
+    callbacks = [];
+    for (i = 0; i < n; i++) {
+     var k = (function k2(){
+    return function k3(){
+    return i;
+    }
+     })();
+    callbacks.push(k());
+    }
+    return callbacks;
+}
+
+closure always have the latest value of the variables available , in this case callbacks array will have value as 10 for in all the 
+indexes because closures share the references not the actual value, hence to overcome this we either use let or the solution given above
+ex : console.log(createFunctions(10)[6]()); 
+
+*/
 
 
 

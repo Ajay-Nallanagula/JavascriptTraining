@@ -1,0 +1,166 @@
+Javascript Objects:
+Javascript properties are enumerable, writable and configurable
+http://arqex.com/967/javascript-properties-enumerable-writable-configurable
+
+var ob = {a: 1};
+ob.a; // => 1
+ 
+// Modifying the value of a property
+ob.a = 0; //Writable
+ob.a; // => 0;
+// Creating a new property
+ob.b = 2;
+ob.b; // => 2
+// Deleting a property
+delete ob.b; //Configurable
+ob.b; // => undefined
+
+By Default when you create an object, each property in object gets three properties additinally i.e 
+a) enumerable
+b) writable
+c) configurable
+
+
+Enumerable: I can access to all of them using a for..in loop. Also, enumerable property keys of an object are returned using Object.keys method.
+Writable: I can modify their values, I can update a property just assigning a new value to it: ob.a = 1000;
+Configurable: I can modify the behavior of the property, so I can make them non-enumerable, non-writable or even non-cofigurable if we feel like doing so. 
+NOTE : Configurable properties are the only ones that can be removed using the delete operator
+
+For ex : var obj = {prop1:'hi',prop2:'hello'} 
+
+How does Javascript interprets the properties of obj shown in example ??
+Ans: Well you can find that out by using Object.getOwnPropertyDescriptor(<object>,'<propertyName'>);
+
+for ex:
+Object.getOwnPropertyDescriptor(obj,'prop1');
+output:{value:'hi',enumerable:true,configurable:true,writable:true}
+
+Object.getOwnPropertyDescriptor(obj,'prop2');
+output:{value:'hello',enumerable:true,configurable:true,writable:true}
+
+How can we edit the enumerable,configurable,writable properties of javascript ?
+Ans :  
+Object.defineProperty() or Object.defineProperties : This function is used to define properties on object set the value of the property and change default behaviour of enumerable,writable,configurable.
+//For multiple properties
+Syntax : Object.defineProperties(obj, {key1: descriptor1}, {key2: descriptor2},…)
+
+//For single property
+Syntax : Object.defineProperty(obj,'<propertyname>',
+{
+value:<value>,
+enumerable:<T/F>,
+configurable:<T/F>,
+writable:<T/F>,
+}
+);
+
+
+Object.defineProperties(ob,
+{
+prop1:{value:'hi1',enumerable:false,configurable:false,writable:false},
+prop2:{value:'hello1',enumerable:false,configurable:false,writable:false},
+});
+
+What are the default values for properties on an object using Object.defineProperty() ??
+Object.defineProperty(obj,{
+prop3:{value:"I am Prop3"}
+});
+Object.getOwnPropertyDescriptor(obj,'prop3')
+output : {value:'I am Prop3',enumerable:false,configurable:false,writable:false}
+
+What will happen if non-writable property contains an object ??
+For example : Object.defineProperty(obj,'prop5',{
+value:{
+prop10:'10',
+prop11:'11'
+},
+writable:false
+});
+
+In this case the reference to the object is what is not writable, but the object itself can be modified yet
+
+obj.prop5.prop10 = 'prop10'
+obj.prop5.prop11 = 'prop11'
+console.log(obj.prop5) //{prop10:'prop10',prop11:"prop11"}
+
+obj.prop5 ={prop100:'100'} // {prop10:'prop10',prop11:"prop11"}, instrict mode will throw typeerror
+
+What should be done to restrict non-writable property object changes ??
+Ans We can make use of   Object.freeze( obj ) // all the modifications will be ignored
+
+____________________________________________________________________________________________
+Demo Example :
+
+
+var task = {
+test: "Test"
+}
+
+var descrpt = Object.getOwnPropertyDescriptor(task,'test');
+//console.log(descrpt);
+
+//Multiple properties
+Object.defineProperties(task,{
+prop1:{value:'prop1'},
+prop2:{value:'prop2'}
+});
+
+
+//One property
+Object.defineProperty(task,'prop3',{value:'prop3',/*configurable:true*/}); //Line No 16
+//console.log(Object.getOwnPropertyDescriptor(task,'prop3'));
+
+//Check for writable
+task.prop3 ='prop4';  //STRICT MODE : Error thrown TypeError: Cannot assign to read only property 'prop3' of object '#<Object>'
+//NON_STRICT MODE : prop3 , no error thrown value remains unchanged
+//console.log(task.prop3); 
+//Writable is false for prop3
+
+
+//if non-writable property contains an object , Object.freeze()
+
+Object.defineProperty(task,'prop5',{
+value:{
+prop10:'10',
+prop11:'11'
+},
+writable:false
+});
+task.prop5.prop10 = 'prop10';
+task.prop5.prop11 = 'prop11';
+
+console.log(task.prop5) //{prop10: "prop10", prop11: "prop11"}
+
+//To avoid :
+Object.freeze(task)
+task.prop5.prop10 ='prop99'; //{prop10: "prop10", prop11: "prop11"} , in strict mode will lead to an error
+
+
+//check for enumerable
+for(key in task){
+console.log(key); 
+}
+//NON STRICT MODE : Outputs only test, prop1, prop2,prop3 has enumerable as false
+//STRICT MODE : key is not defined, will not output test
+
+//Check for configurable
+Object.defineProperty(task,'prop3',{
+value:6,
+writable: true,
+enumerable:true,
+configurable:true
+});
+//TypeError: Cannot redefine property: prop3
+//To make this work on Line No 16 comment out /*configurable:true*/
+
+Object.defineProperty(task,'prop9',{value:'prop9',configurable:false, writable:true});
+
+//Exceptional case
+Object.defineProperty(task,'prop9',{
+writable: false, //This is allowed 
+});
+
+//NOTE : You cannot delete properties of an object whose configurable is set to false
+
+
+____________________________________________________________________________________________

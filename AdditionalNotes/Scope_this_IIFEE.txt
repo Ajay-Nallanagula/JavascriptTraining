@@ -1,0 +1,226 @@
+Function Scope :
+
+IIFEE:
+
+//Name IIFEE are very much valid 
+(function somename(){
+alert("hello world!!");
+})();
+
+//Even this works :
+(function somename(){
+alert("hello world!!");
+}());
+
+//Another possibility of IIFEE
+var k = (function somename(){
+alert("hello world!!");
+return "Ajay";
+})();
+
+alert(k); //Ajay, here k will have the return value only not the entire function.
+
+
+Note about functions :
+var p = function someDummy(){
+console.log("Test");
+}
+
+var k = {
+"someDummy":p
+};
+
+console.log(k.someDummy); //Outputs the entire function
+console.log(k.someDummy()); //Outputs Test
+
+Block Scope in ES6 :
+
+let keyword: will hijack the implicit scope 
+
+Why to use let : 
+(function(){
+for(var i = 0; i<3;i++){
+console.log("inside for");
+}
+//The var i is attached to function scope here 
+console.log("outsie for in func scope i =",i); //outside for in func scope i = 3,
+})();
+
+//Usage of let
+(function(){
+//i is attached onlt to for loop scope
+for(let i = 0; i<3;i++){
+console.log("inside for");
+}
+console.log("outsie for in func scope i =",i); //ReferenceError: i is not defined.
+})();
+
+________________________________________________________________________________________________________________________________________________________________________________________________________
+Hoisting: its a conceptual concept 
+
+
+Hoisting: it is javascript default behaviour, to move all the variable/functions declarations to top of current scope. 
+
+Example 1:
+console.log(myundeclaredvar) // this will throw Reference error saying myundeclaredvar undefined
+
+console.log(hostedVar)  //will log undefined, we will not get the error.
+var hostedVar;
+
+Note : undefined is not holding a value currently, but its been declared. Undeclared have no declaration at all.
+
+Example 2: 
+
+// Hoisting will be done here and throws an error, Hoisting will first checkif exprFunc is declared if declared it will set to undefined, later on it will assign the function
+//When this is executed you will see an "exprFunc is not a function"
+exprFunc()
+myFunc();//Hoisting makes it possible
+
+//These are normal functions
+function myFunc(){
+console.log("this is from myFunc()");
+}
+
+//These are function expressions
+//var exprFunc is variable declaration.
+var exprFunc = function(){
+console.log("this is from exprFunc()");
+}
+
+
+Example 3 :
+console.log(a); // o/p undefined not undeclared, because of hoisting
+console.log(b);// o/p undefined not undeclared, because of hoisting
+var a = b;
+var b = 2;
+
+//After hoisting the code will look like this
+var a;
+var b; 
+console.log(a);
+console.log(b);
+a = b;
+b = 2;
+
+Example 4: 
+console.log(a); // o/p undefined not undeclared, because of hoisting
+console.log(b);// o/p undefined not undeclared, because of hoisting
+console.log(someDummy()); //someDummy
+console.log(func());//Reference Error, actual val = undefined, calling undefined error
+var a = b;
+var b = 2;
+
+function someDummy(){
+return "someDummy"
+}
+
+var func= function(){
+return "func";
+}
+
+//After Hoisting:
+function someDummy(){
+return "someDummy"
+}
+var a;
+var b; 
+var func;
+
+console.log(a);
+console.log(b);
+console.log(someDummy());
+console.log(func());
+a = b;
+b = 2;
+
+func= function(){
+return "func";
+}
+
+'use strict' to avoid the issues related to hoisting ,undeclared variables, and also while using readonly, delete, while using duplicates, while using octal ,hexa decimal.
+use strict means, asking javascript not to help in creating variables if missed declaration.
+
+//Delete is only to delete properties on objects, by default it will not have any effect of the objects or variable directly when applied.
+var obj ={a:10,b:20};
+delete obj.a // will delete the property and log {b:20}
+delete obj // will not throw an error but will output {b:20} to avoid this from happening or to throw an error we will have to use "use strict",
+var k = 10;
+delete k; // will output 10, to avoid this and throw an error use strict mode.
+
+//usage of duplicates 
+function dummy(a,b,a){
+console.log(a);
+}
+
+dummy(1,2,1000)//output 1000, to avoid such situation again use strict.
+
+//Octal Hexa Decimal
+var x= 100 //decimal
+var z = 002 // Octal, a number preceded with zero is octal number
+var  p = 0x12 // HexaDecimal, a number preceded with )x is hexadecimal
+console.log(x+z+p)  //140 , which is done by javascript which seems to be incorrect in decimal world, hence to avoid this confusion use strict
+NOT incase in strict mode If you want to use octal/hexadecimal we will have to use parseInt(10,8)// second parameter
+
+What does void(0) do ??
+void("anything") retuns undefined as output.
+
+Dynamic scope(this) vs lexical scope
+lexical scope is compile time scope, dynamic scope is done during runtime.
+
+JS parameters by value vs Params by reference :
+https://stackoverflow.com/questions/7744611/pass-variables-by-reference-in-javascript
+
+primitive type variables like strings and numbers are always passed by value.
+Arrays and Objects are passed by reference or by value based on these conditions:
+if you are setting the value of an object or array it is Pass by Value.
+
+object1 = {prop: "car"};
+array1 = [1,2,3];
+if you are changing a property value of an object or array then it is Pass by Reference.
+
+object1.prop = "car";
+array1[0] = 9;
+
+Functions created with new syntax by default return 'this', where as all other functions by default return undefined
+
+//Closure will always hold the reference of the variable , rather than thevalue of the variable, here the text contains "Hello #2" because the the text is updated again, the "sayAlert()" always will have the reference of text hence it outputs "Hello #2"
+function sayHello() {
+    var text = "Hello #1";
+    var sayAlert = function() { alert(text); } //Outputs "Hello #2"
+    
+    text = "Hello #2";
+    sayAlert();
+}
+
+sayHello();
+
+//To avoid this situation we usally follow IIFEE or let key word in ES6
+function createFunctions(n) {
+    var callbacks, i, elem;
+    callbacks = [];
+    for (i = 0; i < n; i++) {
+        elem = (function innFunc(i) {
+            return function innerMostFunc() {
+                return i;
+            };
+        })(i);
+        callbacks.push(elem);
+    }
+    return callbacks;
+}
+
+Or
+
+//Way 2 : 
+function createFunctions(n) {
+    var callbacks = [];
+    for (let i = 0; i < n; i++) {
+        var f = function innFunc() {
+            return i;
+        };
+        callbacks.push(f);
+    }
+    return callbacks;
+}
+
+Concepts Closure :

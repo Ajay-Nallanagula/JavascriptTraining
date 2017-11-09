@@ -1,0 +1,42 @@
+Javascript Info: 
+
+AMD Patterns :
+https://addyosmani.com/resources/essentialjsdesignpatterns/book/#modularjavascript
+
+Relation between CommonJs Vs AMD Vs RequireJs
+https://stackoverflow.com/questions/16521471/relation-between-commonjs-amd-and-requirejs
+
+In console window you see undefined in most cases because you console expects to return a value from a statment, if the statment is non returning it will print out undefined.
+
+var k = Window.prompt("some string") is used to enter the input from user
+
+void keyword:
+Anything that you give after void beacome undefined for ex:
+void 0 //output undefined
+void 42 //output undefined
+void(42) //output undefined
+
+JsLint > JsHint > EsLint --> support to scan js code and detect potential problems and errors
+EsLint is latest linting tool , which is extensible, flexible configurable.
+*.jshintrc is used to configure custom rules for ex eqeqeq will enforce the usage of === rather than ==
+{
+eqeqeq:true
+}
+
+way 1 : npm install -g jshint
+way 2: plugins in IDE
+way 3 : using grunt/gulp
+
+"==" if variables are of different types it will convert them to same type and then compare.
+"===", there is no type conversion here.
+
+Difference between new Array() vs [] intialization ??
+https://stackoverflow.com/questions/931872/what-s-the-difference-between-array-and-while-declaring-a-javascript-ar
+
+
+
+
+
+
+
+

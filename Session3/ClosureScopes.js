@@ -23,11 +23,12 @@ function createFunctions(n) {
     var callbacks, i, elem;
     callbacks = [];
     for (i = 0; i < n; i++) {
-        callbacks.push((function innFunc(i) {
+    var elem = (function innFunc(i) {
             return function innerMostFunc() {
                 return i;
             };
-        })(i));
+        })(i);
+        callbacks.push(elem);
     }
     return callbacks;
 }*/

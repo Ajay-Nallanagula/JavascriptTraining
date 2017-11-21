@@ -1,0 +1,28 @@
+Task: Create web-application for load and search info about YouTube videos using user's request. YouTube REST API loads using cross-domain XHR request.
+
+Use-case:
+1. User opens the application and see search input
+2. User types the topic inside of search input. For example javascript
+3. Application makes call to YouTube REST API and shows results in horizontal list
+
+4. List is scrolled through click on the page and make swipe. Few fast swipes - few pages pass. Video count on the page depends on screen size. Additional pagination is paging below the page.
+5. Till swiping application loads new data (15 videos for one call)
+
+Requirements:
+1. Chrome support and one mobile platform
+2. HTML creates using JS. Almost no code inside index.html.
+3. No jquery or other frameworks. You can use only lodash.
+4. JS code should be splitted to different files depend on architecture.
+5. Minimal info about video is title with link on youtube, preview, description, author, published date, count of views.
+6. Data from youtube could be received using:
+- https://www.googleapis.com/youtube/v3/search?key=AIzaSyCTWC75i70moJLzyNh3tt4jzCljZcRkU8Y&type=video&part=snippet&maxResults=15&q=js
+- https://www.googleapis.com/youtube/v3/videos?key=AIzaSyCTWC75i70moJLzyNh3tt4jzCljZcRkU8Y&id=nq4aU9gmZQk,REu2BcnlD34,qbPTdW7KgOg&part=snippet,statistics
+- how too receive API key - https://www.youtube.com/watch?v=JbWnRhHfTDA
+- full documentation - https://developers.google.com/youtube/v3/
+7. Videos swipe only by pages
+8. Design should be not ugly
+
+
+https://www.googleapis.com/youtube/v3/videos?key=AIzaSyA0MnWlMrelKfjezM_rRB4wp6Ptb98lxkg&part=snippet,statistics
+
+https://www.youtube.com/watch?v=123123asdsad12

@@ -1,30 +1,38 @@
 var htmlUtility = (function utility(youtubeApi) {
-    var createHtmlElements, setAttributes, btnSearchItemClick;
+    var createHtmlElements, setAttributes, btnSearchItemClick, extractPromise,videoIdsList;
 
     createHtmlElements = function createElements(elemType, attrObj) {
         var element = document.createElement(elemType);
         setAttributes(attrObj, element);
         return element;
-    }
+    };
 
     setAttributes = function setHtmlAttributes(attrObj, element) {
         for (var item in attrObj) {
             element.setAttribute(item, attrObj[item]);
         }
-    }
+    };
 
     btnSearchItemClick = function btnSearchClick(searchTxt) {
-        return function extractText() {
+        return (function extractText() {
             if (searchTxt.value) {
-                //alert(searchTxt.value);
-            //Call youtubeApi here
+                return youtubeApi.search(searchTxt.value).then(function (resp) {
+                    return resp["items"];
+                });
             }
-        }
-        //ES6 fetch() feature https://scotch.io/tutorials/how-to-use-the-javascript-fetch-api-to-get-data
-    }
+        })();
+    };
+
+    videoIdsList = function videos(videoIds) {
+        return youtubeApi.videos(videoIds).then(function (resp) {
+            return resp;
+        });
+    };
+
     return {
         createHtmlElements: createHtmlElements,
-        btnSearchItemClick: btnSearchItemClick
+        btnSearchItemClick: btnSearchItemClick,
+        videoIdsList: videoIdsList
     };
 
 })(youtubeApi);

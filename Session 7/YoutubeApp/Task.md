@@ -21,3 +21,8 @@ Requirements:
 - full documentation - https://developers.google.com/youtube/v3/
 7. Videos swipe only by pages
 8. Design should be not ugly
+
+
+https://www.googleapis.com/youtube/v3/videos?key=AIzaSyA0MnWlMrelKfjezM_rRB4wp6Ptb98lxkg&part=snippet,statistics
+
+https://www.youtube.com/watch?v=123123asdsad12

@@ -9,7 +9,7 @@ var youtubeApi = (function youtube() {
     return {
         search: function youtubeSearch(searchText,nextPageToken,previousPageToken) {
             var token;
-            var url =`${url_search}?part=snippet&maxResults=4&q=${searchText}&key=${key}&type=video`;
+            var url =`${url_search}?part=snippet&maxResults=50&q=${searchText}&key=${key}&type=video`;
             if(nextPageToken||previousPageToken){
                 token =nextPageToken||previousPageToken;
                 url = url+"&pageToken="+token;

@@ -60,3 +60,7 @@ html {
       border-bottom-right-radius: 3px;
       border-bottom-left-radius: 3px;
     }
+    .pagePadding{
+      padding-top: 70px!important;
+      padding-left: 260px!important;
+    }

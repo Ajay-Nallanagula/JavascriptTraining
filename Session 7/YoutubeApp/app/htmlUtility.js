@@ -13,11 +13,16 @@ var htmlUtility = (function utility(youtubeApi) {
         }
     };
 
-    btnSearchItemClick = function btnSearchClick(searchTxt) {
+    btnSearchItemClick = function btnSearchClick(searchTxt,nextPageToken,previousPageToken) {
         return (function extractText() {
             if (searchTxt.value) {
-                return youtubeApi.search(searchTxt.value).then(function (resp) {
-                    return resp["items"];
+                return youtubeApi.search(searchTxt.value,nextPageToken,previousPageToken).then(function (resp) {
+                    console.log(resp);
+                    return {
+                        "searchItems":resp["items"],
+                        "nextPageToken":resp.nextPageToken,
+                        "previousPageToken":resp.prevPageToken
+                    };
                 });
             }
         })();

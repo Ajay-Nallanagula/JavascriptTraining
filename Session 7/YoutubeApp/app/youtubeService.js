@@ -1,10 +1,5 @@
 var youtubeApi = (function youtube() {
 
-    // function makeApiCall(url) {
-    //     return fetch(url, function (response) {
-    //         return response.json();
-    //     });
-    // }
     var url_search, key, url_videos;
     url_search = "https://www.googleapis.com/youtube/v3/search" 
     key = "AIzaSyCsVku6Yu-FIsQ2SlrZbYNQ58n_drZBMtM"
@@ -12,10 +7,13 @@ var youtubeApi = (function youtube() {
     url_videos = "https://www.googleapis.com/youtube/v3/videos";
 
     return {
-        //sayHi:function(){ console.log('sayHi');}
-        search: function youtubeSearch(searchText) {
-            var url = `${url_search}?part=snippet&maxResults=15&q=${searchText}&key=${key}&type=video`;
-           // return makeApiCall(url);
+        search: function youtubeSearch(searchText,nextPageToken,previousPageToken) {
+            var token;
+            var url =`${url_search}?part=snippet&maxResults=4&q=${searchText}&key=${key}&type=video`;
+            if(nextPageToken||previousPageToken){
+                token =nextPageToken||previousPageToken;
+                url = url+"&pageToken="+token;
+            }
             return fetch(url).then(function (response) {
                 return response.json();
             });

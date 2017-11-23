@@ -56,73 +56,95 @@
 
     document.querySelector("#btnSearch").addEventListener("click", btnClick);
 
-    function pagination() {
-       var str =  `<div class="panelFoot">
+    function pagination(nextPageToken, previousPageToken) {
+        var str = `<div class="panelFoot">
         <div class="row">
-          <div class="col col-xs-4">Page 1 of 5</div>
+          <div class="col col-xs-4"></div>
           <div class="col col-xs-8">
             <ul class="pagination hidden-xs pull-right">
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
+              <li><a href="#" id="lnkNextPage" >next</a></li>
+              <li><a href="#" id="lnkPrevPage">prev</a></li>
             </ul>
-            <ul class="pagination visible-xs pull-right">
-                <li><a href="#">«</a></li>
-                <li><a href="#">»</a></li>
-            </ul>
+           
           </div>
         </div>
       </div>`;
-    
-    return str;
+
+        
+
+        return str;
+        /*  <li><a href="#" onclick="btnClick(${nextPageToken})">1</a></li>
+                  <li><a href="#" onclick="btnClick(${nextPageToken},${previousPageToken})">2</a></li
+                  onclick="manipulateShowResults(${nextPageToken},${previousPageToken})"
+                   onclick="manipulateShowResults(${nextPageToken},${previousPageToken})"
+                  */
+
     }
 
+function bindPaginationEvents(nextPageToken, previousPageToken){
+    var nextLnk = document.getElementById('lnkNextPage');
+    var prevLnk = document.getElementById('lnkPrevPage');
+    nextLnk.addEventListener('click', function () {
+        manipulateShowResults(nextPageToken);
+    });
+    prevLnk.addEventListener('click', function () {
+        manipulateShowResults(previousPageToken);
+    });
+
+}
 
 
+    function btnClick(event, nextPageToken, previousPageToken) {
+        manipulateShowResults(nextPageToken, previousPageToken);
+    }
 
-    function btnClick() {
+    function manipulateShowResults(nextPageToken, previousPageToken) {
         document.getElementById('player').innerHTML = '';
-        var result = htmlUtility.btnSearchItemClick(document.querySelector("#txtSearch"));
+        var result = htmlUtility.btnSearchItemClick(document.querySelector("#txtSearch"), nextPageToken, previousPageToken);
 
         return result.then(function (resp) {
             searchVideoInfo = '';
-            resp.forEach(function (respItem) {
+            resp.searchItems.forEach(function (respItem) {
                 searchVideoInfo = `${searchVideoInfo}${respItem.id.videoId},`; //additional comma to be trimmed
             });
-
+            nextPageToken = resp.nextPageToken || null;
+            previousPageToken = resp.previousPageToken || null;
             //Api to videos Minimal info about video is title with link on youtube, preview, description, author, published date, count of views
             htmlUtility.videoIdsList(searchVideoInfo.slice(0, searchVideoInfo.length - 1)).then(function (resp) {
-                   var tableRow = document.createElement("tr");
+                var tableRow = document.createElement("tr");
 
-                    resp.items.forEach(function (item) {
-                        // console.log(item);
-                        var td = document.createElement('td');
-                        var frameObj = {
-                            "src": `https://www.youtube.com/embed/${item.id}`,
-                            "width": "420",
-                            "height": "345",
-                            "allowfullscreen": "allowfullscreen"
-                        };
-                        var iframe = htmlUtility.createHtmlElements('iframe', frameObj);
-                        var subdiv = document.createElement('div');
-                        subdiv.innerHTML = `<div><b>Published On: </b>${item.snippet.publishedAt}</div>
-                                       <div><b>ViewCount: </b>${item.statistics.viewCount}</div>
-                                        <div><b>Description: </b>${item.snippet.title}</div>`;
+                resp.items.forEach(function (item) {
+                    // console.log(item);
+                    var td = document.createElement('td');
+                    var frameObj = {
+                        "src": `https://www.youtube.com/embed/${item.id}`,
+                        "width": "420",
+                        "height": "345",
+                        "allowfullscreen": "allowfullscreen"
+                    };
+                    var iframe = htmlUtility.createHtmlElements('iframe', frameObj);
+                    var subdiv = document.createElement('div');
+                    subdiv.innerHTML = `<div><b>Published On: </b>${item.snippet.publishedAt}</div>
+                                   <div><b>ViewCount: </b>${item.statistics.viewCount}</div>
+                                    <div><b>Description: </b>${item.snippet.title}</div>`;
 
-                        td.appendChild(iframe);
-                        td.appendChild(subdiv);
-                        tableRow.appendChild(td);
-                    });
-                    var table = htmlUtility.createHtmlElements('table',{"class":"tableSpacing"});
-                    var tableBody = document.createElement('tbody');
-                    tableBody.appendChild(tableRow);
-                    table.appendChild(tableBody);
-                    videoDiv.appendChild(table);
-                    var paginate = pagination();
-                    videoDiv.insertAdjacentHTML('beforeend', paginate);
+                    td.appendChild(iframe);
+                    td.appendChild(subdiv);
+                    tableRow.appendChild(td);
+                });
+                var table = htmlUtility.createHtmlElements('table', {
+                    "class": "tableSpacing"
+                });
+                var tableBody = document.createElement('tbody');
+                tableBody.appendChild(tableRow);
+                table.appendChild(tableBody);
+                videoDiv.appendChild(table);
+                var paginate = pagination();
+                videoDiv.insertAdjacentHTML('beforeend', paginate);
+                bindPaginationEvents(nextPageToken, previousPageToken);
             });
         });
     }
+
+
 })();

@@ -9,8 +9,8 @@
 
     //Pagination Related start
     function fetchNext50html() {
-        if(document.querySelector("#txtSearch").value.length<1){
-                   return false;
+        if (document.querySelector("#txtSearch").value.length < 1) {
+            return false;
         }
         var paneldiv = htmlUtility.createHtmlElements('div', {
             'class': 'panelFoot'
@@ -50,12 +50,12 @@
 
     function buildPagination() {
         var noOfPages, pagediv;
-        if(document.querySelector("#txtSearch").value.length<1){
+        if (document.querySelector("#txtSearch").value.length < 1) {
             return false;
- }
+        }
         pagediv = htmlUtility.createHtmlElements('div', {
             'class': 'container pagePadding',
-            'id':'divfootpanel'
+            'id': 'divfootpanel'
         });
         noOfPages = htmlUtility.paginationCal(itemsArray.length, appConstants.pageSize);
 
@@ -79,7 +79,7 @@
                 var endIndex = pageNo * appConstants.pageSize;
                 var startIndex = endIndex - appConstants.pageSize;
 
-                document.getElementById('dispVideos').innerHTML = '';
+                document.getElementById('dispVideos').innerHTML = appConstants.emptyContent
                 displayVideosHorizontally(itemsArray.slice(startIndex, endIndex));
             })
             li.appendChild(lnk);
@@ -126,7 +126,7 @@
         var tableRow, iframe, frameObj, td, table, tableBody, fetchNexthtml;
 
         tableRow = document.createElement("tr");
-        nextSetdiv.innerHTML = '';
+        nextSetdiv.innerHTML = appConstants.emptyContent
 
         frameObj = {
             "width": "420",
@@ -160,28 +160,32 @@
 
     //Button click events start
     function btnClick() { //event, nextPageToken, previousPageToken
-        if (document.querySelector("#txtSearch").value.length>0) {
-            if(isSearchTextChanged){
-            manipulateShowResults();
-            isSearchTextChanged = false;
+        var txtSearch , divfootpanel;
+        txtSearch = document.querySelector("#txtSearch");
+        divfootpanel = document.querySelector("#divfootpanel");
+        if (txtSearch.value.trim().length > 0) {
+            if (isSearchTextChanged) {
+                manipulateShowResults();
+                isSearchTextChanged = false;
             }
-        }
-        else{
-               document.querySelector("#divfootpanel").innerHTML='';
-               dispVideos.innerHTML ='';
-               nextSetdiv.innerHTML ='';
-               isPageStripCreated=false;
+        } else {
+            if(divfootpanel && dispVideos && nextSetdiv){
+            divfootpanel.innerHTML = appConstants.emptyContent;
+            dispVideos.innerHTML = appConstants.emptyContent;
+            nextSetdiv.innerHTML = appConstants.emptyContent;
+            isPageStripCreated = false;
+            }
+            txtSearch.value=appConstants.emptyContent;
         }
     }
 
     function manipulateShowResults(isNextStrip) {
         var result, newsearchItem;
         newsearchItem = document.querySelector("#txtSearch");
-       // if(newsearchItem.value.length>0){
-        document.getElementById('dispVideos').innerHTML = '';
+        document.getElementById('dispVideos').innerHTML = appConstants.emptyContent
         result = isNextStrip ? htmlUtility.btnSearchItemClick(newsearchItem, nextPageToken, previousPageToken) : htmlUtility.btnSearchItemClick(newsearchItem);
         return result.then(function (resp) {
-            searchVideoInfo = '';
+            searchVideoInfo = appConstants.emptyContent
             resp.searchItems.forEach(function (respItem) {
                 searchVideoInfo = `${searchVideoInfo}${respItem.id.videoId},`; //additional comma to be trimmed
             });
@@ -192,17 +196,13 @@
                 itemsArray = resp.items;
                 displayVideosHorizontally(itemsArray.slice(0, appConstants.pageSize), videoDiv);
                 if (!isPageStripCreated) {
-                    var paginate = buildPagination(); 
+                    var paginate = buildPagination();
                     videoDiv.appendChild(paginate);
                     isPageStripCreated = true;
                 }
             });
         });
-    //}
-    // else{
-    //     videoDiv.innerHTML ='';
-    // }
-}
+    }
     //Button click events end
 
     //Variable declaration
@@ -273,8 +273,8 @@
 
     document.querySelector("#btnSearch").addEventListener("click", btnClick);
     document.querySelector("#txtSearch").addEventListener("change", txtChange);
-    document.querySelector("#txtSearch").addEventListener("keydown",function(e){
-        if(e.keyCode==13 ||e.which==13){
+    document.querySelector("#txtSearch").addEventListener("keydown", function (e) {
+        if (e.keyCode == 13 || e.which == 13) {
             btnClick();
         }
     });

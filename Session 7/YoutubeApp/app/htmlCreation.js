@@ -9,6 +9,9 @@
 
     //Pagination Related start
     function fetchNext50html() {
+        if(document.querySelector("#txtSearch").value.length<1){
+                   return false;
+        }
         var paneldiv = htmlUtility.createHtmlElements('div', {
             'class': 'panelFoot'
         });
@@ -47,9 +50,12 @@
 
     function buildPagination() {
         var noOfPages, pagediv;
-
+        if(document.querySelector("#txtSearch").value.length<1){
+            return false;
+ }
         pagediv = htmlUtility.createHtmlElements('div', {
-            'class': 'container pagePadding'
+            'class': 'container pagePadding',
+            'id':'divfootpanel'
         });
         noOfPages = htmlUtility.paginationCal(itemsArray.length, appConstants.pageSize);
 
@@ -153,16 +159,25 @@
     //Pagination Related End
 
     //Button click events start
-    function btnClick(event, nextPageToken, previousPageToken) {
-        if (isSearchTextChanged) {
+    function btnClick() { //event, nextPageToken, previousPageToken
+        if (document.querySelector("#txtSearch").value.length>0) {
+            if(isSearchTextChanged){
             manipulateShowResults();
             isSearchTextChanged = false;
+            }
+        }
+        else{
+               document.querySelector("#divfootpanel").innerHTML='';
+               dispVideos.innerHTML ='';
+               nextSetdiv.innerHTML ='';
+               isPageStripCreated=false;
         }
     }
 
     function manipulateShowResults(isNextStrip) {
         var result, newsearchItem;
         newsearchItem = document.querySelector("#txtSearch");
+       // if(newsearchItem.value.length>0){
         document.getElementById('dispVideos').innerHTML = '';
         result = isNextStrip ? htmlUtility.btnSearchItemClick(newsearchItem, nextPageToken, previousPageToken) : htmlUtility.btnSearchItemClick(newsearchItem);
         return result.then(function (resp) {
@@ -183,7 +198,11 @@
                 }
             });
         });
-    }
+    //}
+    // else{
+    //     videoDiv.innerHTML ='';
+    // }
+}
     //Button click events end
 
     //Variable declaration
@@ -254,4 +273,9 @@
 
     document.querySelector("#btnSearch").addEventListener("click", btnClick);
     document.querySelector("#txtSearch").addEventListener("change", txtChange);
+    document.querySelector("#txtSearch").addEventListener("keydown",function(e){
+        if(e.keyCode==13 ||e.which==13){
+            btnClick();
+        }
+    });
 })(appConstants);

@@ -1,5 +1,5 @@
 var htmlUtility = (function utility(youtubeApi) {
-    var createHtmlElements, setAttributes, btnSearchItemClick, extractPromise, videoIdsList, buildPagination;
+    var createHtmlElements, setAttributes, btnSearchItemClick, videoIdsList,paginationCal;
 
     createHtmlElements = function createElements(elemType, attrObj) {
         var element = document.createElement(elemType);
@@ -36,12 +36,17 @@ var htmlUtility = (function utility(youtubeApi) {
         });
     };
 
-   
-
+  paginationCal = function paginationLogic(){
+    var noOfPages = Math.floor(itemsArray.length / pageSize);
+    var remainingItems = itemsArray.length % pageSize;
+    noOfPages = (itemsArray.length % pageSize) ? noOfPages + 1 : noOfPages;
+    return noOfPages;
+  }
     return {
         createHtmlElements: createHtmlElements,
         btnSearchItemClick: btnSearchItemClick,
-        videoIdsList: videoIdsList
+        videoIdsList: videoIdsList,
+        paginationCal: paginationCal
     };
 
 })(youtubeApi);

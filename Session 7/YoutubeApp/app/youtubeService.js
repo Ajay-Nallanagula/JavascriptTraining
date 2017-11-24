@@ -20,6 +20,7 @@ var youtubeApi = (function youtube() {
         },
 
         videos: function videosList(videoIds) {
+            console.log(videoIds);
             var url = `${url_videos}?id=${videoIds}&part=snippet,statistics&key=${key}`;
             return fetch(url).then(function (response) {
                 return response.json();

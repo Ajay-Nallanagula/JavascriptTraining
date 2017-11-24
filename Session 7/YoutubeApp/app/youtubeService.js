@@ -1,15 +1,9 @@
-var youtubeApi = (function youtube() {
-
-    var url_search, key, url_videos;
-    url_search = "https://www.googleapis.com/youtube/v3/search" 
-    key = "AIzaSyCsVku6Yu-FIsQ2SlrZbYNQ58n_drZBMtM"
-    //key1 = "AIzaSyA0MnWlMrelKfjezM_rRB4wp6Ptb98lxkg"; 
-    url_videos = "https://www.googleapis.com/youtube/v3/videos";
-
+var youtubeApi = (function youtube(appConstants) {
+    
     return {
         search: function youtubeSearch(searchText,nextPageToken,previousPageToken) {
-            var token;
-            var url =`${url_search}?part=snippet&maxResults=50&q=${searchText}&key=${key}&type=video`;
+            var token,url;
+            url =`${appConstants.url_search}?part=snippet&maxResults=50&q=${searchText}&key=${appConstants.key}&type=video`;
             if(nextPageToken||previousPageToken){
                 token =nextPageToken||previousPageToken;
                 url = url+"&pageToken="+token;
@@ -20,11 +14,11 @@ var youtubeApi = (function youtube() {
         },
 
         videos: function videosList(videoIds) {
-            console.log(videoIds);
-            var url = `${url_videos}?id=${videoIds}&part=snippet,statistics&key=${key}`;
+            var url;
+            url = `${appConstants.url_videos}?id=${videoIds}&part=snippet,statistics&key=${appConstants.key}`;
             return fetch(url).then(function (response) {
                 return response.json();
             });
         }
     }
-}());
+}(appConstants));

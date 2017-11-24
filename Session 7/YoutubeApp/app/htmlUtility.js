@@ -1,5 +1,5 @@
 var htmlUtility = (function utility(youtubeApi) {
-    var createHtmlElements, setAttributes, btnSearchItemClick, videoIdsList,paginationCal;
+    var createHtmlElements, setAttributes, btnSearchItemClick, videoIdsList, paginationCal;
 
     createHtmlElements = function createElements(elemType, attrObj) {
         var element = document.createElement(elemType);
@@ -36,12 +36,14 @@ var htmlUtility = (function utility(youtubeApi) {
         });
     };
 
-  paginationCal = function paginationLogic(){
-    var noOfPages = Math.floor(itemsArray.length / pageSize);
-    var remainingItems = itemsArray.length % pageSize;
-    noOfPages = (itemsArray.length % pageSize) ? noOfPages + 1 : noOfPages;
-    return noOfPages;
-  }
+    paginationCal = function paginationLogic(arrLength, pageSize) {
+        var noOfPages, remainingItems;
+        noOfPages = Math.floor(arrLength / pageSize);
+        remainingItems = arrLength % pageSize;
+        noOfPages = (arrLength % pageSize) ? noOfPages + 1 : noOfPages;
+        return noOfPages;
+    }
+
     return {
         createHtmlElements: createHtmlElements,
         btnSearchItemClick: btnSearchItemClick,
